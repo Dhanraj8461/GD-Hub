@@ -451,7 +451,7 @@ $("next").onclick = function(){
     body: JSON.stringify({platform:state.platform, service:state.service, qty:state.pick.q, link:link, phone:phone})})
   .then(function(r){ return r.json().then(function(d){ if(!r.ok) throw new Error(d.error || "Could not start payment."); return d; }); })
   .then(function(d){
-    saveHist({id:d.order_id, label:state.pick.fq(q) + " " + state.platform + " " + svcLabel(state.service).toLowerCase(), amount:state.pick.p, at:Date.now(), status:"AWAITING_PAYMENT"});
+    saveHist({id:d.order_id, label:fq(state.pick.q) + " " + state.platform + " " + svcLabel(state.service).toLowerCase(), amount:state.pick.p, at:Date.now(), status:"AWAITING_PAYMENT"});
     if(!window.Cashfree) throw new Error("Payment script did not load. Please refresh and try again.");
     return window.Cashfree({mode:d.mode}).checkout({paymentSessionId:d.payment_session_id, redirectTarget:"_self"});
   })
