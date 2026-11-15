@@ -1,37 +1,1187 @@
-// Prices (₹ per 1000). Edit the numbers here. This one file is used by the website AND the server.
+// Prices in ₹. Every service has fixed packs: "packs": [[quantity, price], ...]. Edit the numbers here.
+// This one file is used by the website AND the server (the server re-checks the price, so customers cannot change it).
 (function (root, data) {
   if (typeof module !== "undefined" && module.exports) module.exports = data;
   else root.SITE_RATES = data;
 })(this, {
-  "minQty": 100,
-  "maxQty": 1000000,
   "rates": {
     "Instagram": {
-      "Followers": 320,
-      "Likes": 120,
-      "Views": 60
+      "Indian Followers 100% Non-Drop": {
+        "packs": [
+          [
+            100,
+            40
+          ],
+          [
+            500,
+            180
+          ],
+          [
+            1000,
+            310
+          ],
+          [
+            2000,
+            650
+          ],
+          [
+            5000,
+            1499
+          ],
+          [
+            10000,
+            2899
+          ],
+          [
+            20000,
+            5599
+          ],
+          [
+            30000,
+            8299
+          ],
+          [
+            40000,
+            10899
+          ],
+          [
+            50000,
+            13499
+          ]
+        ],
+        "kind": "Profile link",
+        "example": "https://instagram.com/username",
+        "note": "100% Indian followers. Non-drop. Account must be public."
+      },
+      "Likes": {
+        "packs": [
+          [
+            100,
+            12
+          ],
+          [
+            500,
+            60
+          ],
+          [
+            1000,
+            99
+          ],
+          [
+            2000,
+            190
+          ],
+          [
+            3000,
+            279
+          ],
+          [
+            4000,
+            369
+          ],
+          [
+            5000,
+            449
+          ],
+          [
+            10000,
+            849
+          ],
+          [
+            15000,
+            1249
+          ],
+          [
+            20000,
+            1649
+          ],
+          [
+            25000,
+            2049
+          ],
+          [
+            30000,
+            2449
+          ],
+          [
+            35000,
+            2849
+          ],
+          [
+            40000,
+            3249
+          ],
+          [
+            45000,
+            3649
+          ],
+          [
+            50000,
+            3999
+          ]
+        ],
+        "kind": "Post link",
+        "example": "https://instagram.com/p/AbC123xYz/",
+        "note": "Send the post link. Post must be public."
+      },
+      "Reel Views": {
+        "packs": [
+          [
+            1000,
+            49
+          ],
+          [
+            5000,
+            120
+          ],
+          [
+            10000,
+            200
+          ],
+          [
+            20000,
+            350
+          ],
+          [
+            30000,
+            480
+          ],
+          [
+            40000,
+            600
+          ],
+          [
+            50000,
+            700
+          ],
+          [
+            100000,
+            1200
+          ],
+          [
+            200000,
+            2200
+          ],
+          [
+            300000,
+            3000
+          ],
+          [
+            400000,
+            3800
+          ],
+          [
+            500000,
+            4500
+          ],
+          [
+            600000,
+            5200
+          ],
+          [
+            700000,
+            5900
+          ],
+          [
+            800000,
+            6500
+          ],
+          [
+            900000,
+            7100
+          ],
+          [
+            1000000,
+            7700
+          ]
+        ],
+        "kind": "Reel link",
+        "example": "https://instagram.com/reel/AbC123xYz/",
+        "note": "Send the reel link. It must be public."
+      },
+      "Comments": {
+        "packs": [
+          [
+            100,
+            50
+          ],
+          [
+            500,
+            180
+          ],
+          [
+            1000,
+            300
+          ],
+          [
+            2000,
+            600
+          ],
+          [
+            5000,
+            1500
+          ],
+          [
+            10000,
+            2699
+          ]
+        ],
+        "kind": "Post link",
+        "example": "https://instagram.com/p/AbC123xYz/",
+        "note": "Send the post link. Post must be public. Comments are positive and random."
+      },
+      "Reposts": {
+        "packs": [
+          [
+            100,
+            50
+          ],
+          [
+            500,
+            180
+          ],
+          [
+            1000,
+            300
+          ],
+          [
+            2000,
+            600
+          ],
+          [
+            5000,
+            1500
+          ],
+          [
+            10000,
+            2799
+          ]
+        ],
+        "kind": "Post or reel link",
+        "example": "https://instagram.com/reel/AbC123xYz/",
+        "note": "Send the post link. Post must be public."
+      },
+      "Shares": {
+        "packs": [
+          [
+            1000,
+            50
+          ],
+          [
+            2000,
+            80
+          ],
+          [
+            5000,
+            110
+          ],
+          [
+            10000,
+            200
+          ],
+          [
+            20000,
+            320
+          ],
+          [
+            50000,
+            500
+          ],
+          [
+            100000,
+            700
+          ]
+        ],
+        "kind": "Post or reel link",
+        "example": "https://instagram.com/reel/AbC123xYz/",
+        "note": "Send the post link. Post must be public."
+      },
+      "Saves": {
+        "packs": [
+          [
+            100,
+            50
+          ],
+          [
+            500,
+            180
+          ],
+          [
+            1000,
+            220
+          ],
+          [
+            2000,
+            300
+          ],
+          [
+            5000,
+            600
+          ],
+          [
+            10000,
+            999
+          ]
+        ],
+        "kind": "Post or reel link",
+        "example": "https://instagram.com/p/AbC123xYz/",
+        "note": "Send the post link. Post must be public."
+      },
+      "Story Views": {
+        "packs": [
+          [
+            100,
+            30
+          ],
+          [
+            200,
+            60
+          ],
+          [
+            300,
+            90
+          ],
+          [
+            400,
+            120
+          ],
+          [
+            500,
+            150
+          ],
+          [
+            1000,
+            299
+          ],
+          [
+            2000,
+            599
+          ],
+          [
+            3000,
+            899
+          ],
+          [
+            4000,
+            1199
+          ],
+          [
+            5000,
+            1499
+          ],
+          [
+            10000,
+            2899
+          ],
+          [
+            15000,
+            4299
+          ],
+          [
+            20000,
+            5699
+          ]
+        ],
+        "kind": "Profile link",
+        "example": "https://instagram.com/username",
+        "note": "Send your profile link. Story must be live."
+      }
     },
     "Facebook": {
-      "Followers": 300,
-      "Likes": 150,
-      "Views": 80
+      "Page Followers": {
+        "packs": [
+          [
+            100,
+            40
+          ],
+          [
+            500,
+            150
+          ],
+          [
+            1000,
+            250
+          ],
+          [
+            2000,
+            480
+          ],
+          [
+            3000,
+            690
+          ],
+          [
+            4000,
+            880
+          ],
+          [
+            5000,
+            1050
+          ],
+          [
+            10000,
+            1999
+          ],
+          [
+            15000,
+            2899
+          ],
+          [
+            20000,
+            3799
+          ],
+          [
+            25000,
+            4699
+          ],
+          [
+            30000,
+            5599
+          ],
+          [
+            35000,
+            6499
+          ],
+          [
+            40000,
+            7399
+          ],
+          [
+            45000,
+            8299
+          ],
+          [
+            50000,
+            9199
+          ]
+        ],
+        "kind": "Page link",
+        "example": "https://facebook.com/yourpage",
+        "note": "Send your page link. Page must be public."
+      },
+      "Video Views": {
+        "packs": [
+          [
+            1000,
+            49
+          ],
+          [
+            5000,
+            150
+          ],
+          [
+            10000,
+            320
+          ],
+          [
+            20000,
+            550
+          ],
+          [
+            30000,
+            750
+          ],
+          [
+            40000,
+            950
+          ],
+          [
+            50000,
+            1100
+          ],
+          [
+            100000,
+            1900
+          ],
+          [
+            200000,
+            3500
+          ],
+          [
+            300000,
+            5000
+          ],
+          [
+            400000,
+            6500
+          ],
+          [
+            500000,
+            8000
+          ]
+        ],
+        "kind": "Video link",
+        "example": "https://facebook.com/watch/?v=1234567890",
+        "note": "Send the video link. It must be public."
+      },
+      "Post Likes": {
+        "packs": [
+          [
+            100,
+            20
+          ],
+          [
+            500,
+            60
+          ],
+          [
+            1000,
+            120
+          ],
+          [
+            2000,
+            220
+          ],
+          [
+            3000,
+            320
+          ],
+          [
+            4000,
+            420
+          ],
+          [
+            5000,
+            499
+          ],
+          [
+            10000,
+            899
+          ],
+          [
+            15000,
+            1299
+          ],
+          [
+            20000,
+            1699
+          ],
+          [
+            25000,
+            2099
+          ],
+          [
+            30000,
+            2499
+          ],
+          [
+            35000,
+            2899
+          ],
+          [
+            40000,
+            3299
+          ],
+          [
+            45000,
+            3699
+          ],
+          [
+            50000,
+            3999
+          ]
+        ],
+        "kind": "Post link",
+        "example": "https://facebook.com/yourpage/posts/1234567890",
+        "note": "Send the post link. Post must be public."
+      },
+      "Comments": {
+        "packs": [
+          [
+            50,
+            40
+          ],
+          [
+            100,
+            70
+          ],
+          [
+            500,
+            250
+          ],
+          [
+            1000,
+            450
+          ],
+          [
+            2000,
+            850
+          ],
+          [
+            3000,
+            1200
+          ],
+          [
+            4000,
+            1500
+          ],
+          [
+            5000,
+            1799
+          ]
+        ],
+        "kind": "Post link",
+        "example": "https://facebook.com/yourpage/posts/1234567890",
+        "note": "Send the post link. Post must be public. Comments are positive and random."
+      },
+      "Shares": {
+        "packs": [
+          [
+            500,
+            50
+          ],
+          [
+            1000,
+            90
+          ],
+          [
+            2000,
+            170
+          ],
+          [
+            3000,
+            240
+          ],
+          [
+            4000,
+            300
+          ],
+          [
+            5000,
+            350
+          ],
+          [
+            10000,
+            650
+          ],
+          [
+            15000,
+            900
+          ],
+          [
+            20000,
+            1150
+          ],
+          [
+            25000,
+            1400
+          ],
+          [
+            30000,
+            1650
+          ],
+          [
+            35000,
+            1900
+          ],
+          [
+            40000,
+            2150
+          ],
+          [
+            45000,
+            2400
+          ],
+          [
+            50000,
+            2650
+          ]
+        ],
+        "kind": "Post link",
+        "example": "https://facebook.com/yourpage/posts/1234567890",
+        "note": "Send the post link. Post must be public."
+      },
+      "Group Members": {
+        "packs": [
+          [
+            500,
+            130
+          ],
+          [
+            1000,
+            250
+          ],
+          [
+            2000,
+            480
+          ],
+          [
+            3000,
+            690
+          ],
+          [
+            4000,
+            880
+          ],
+          [
+            5000,
+            1050
+          ],
+          [
+            10000,
+            1999
+          ],
+          [
+            20000,
+            3799
+          ],
+          [
+            30000,
+            5499
+          ],
+          [
+            40000,
+            7199
+          ],
+          [
+            50000,
+            8799
+          ],
+          [
+            100000,
+            16999
+          ],
+          [
+            150000,
+            24999
+          ],
+          [
+            200000,
+            32999
+          ],
+          [
+            250000,
+            39999
+          ]
+        ],
+        "kind": "Group link",
+        "example": "https://facebook.com/groups/yourgroup",
+        "note": "Send your group link. Group must be public."
+      }
     },
     "YouTube": {
-      "Subscribers": 1200,
-      "Likes": 200,
-      "Views": 400
+      "Subscribers": {
+        "packs": [
+          [
+            100,
+            350
+          ],
+          [
+            500,
+            1750
+          ],
+          [
+            1000,
+            3500
+          ],
+          [
+            2000,
+            7000
+          ],
+          [
+            3000,
+            10500
+          ],
+          [
+            5000,
+            17500
+          ],
+          [
+            10000,
+            35000
+          ]
+        ],
+        "kind": "Channel link",
+        "example": "https://youtube.com/@yourchannel"
+      },
+      "Likes": {
+        "packs": [
+          [
+            500,
+            199
+          ],
+          [
+            1000,
+            350
+          ],
+          [
+            2000,
+            700
+          ],
+          [
+            3000,
+            1050
+          ],
+          [
+            4000,
+            1400
+          ],
+          [
+            5000,
+            1750
+          ],
+          [
+            6000,
+            2100
+          ],
+          [
+            7000,
+            2450
+          ],
+          [
+            8000,
+            2800
+          ],
+          [
+            9000,
+            3150
+          ],
+          [
+            10000,
+            3500
+          ]
+        ],
+        "kind": "Video link",
+        "example": "https://youtube.com/watch?v=AbC123xYz45"
+      },
+      "Views": {
+        "packs": [
+          [
+            500,
+            150
+          ],
+          [
+            1000,
+            285
+          ],
+          [
+            2000,
+            570
+          ],
+          [
+            3000,
+            855
+          ],
+          [
+            4000,
+            1140
+          ],
+          [
+            5000,
+            1425
+          ],
+          [
+            6000,
+            1710
+          ],
+          [
+            7000,
+            1995
+          ],
+          [
+            8000,
+            2280
+          ],
+          [
+            9000,
+            2565
+          ],
+          [
+            10000,
+            2850
+          ],
+          [
+            12000,
+            3420
+          ],
+          [
+            15000,
+            4275
+          ],
+          [
+            20000,
+            5700
+          ]
+        ],
+        "kind": "Video link",
+        "example": "https://youtube.com/watch?v=AbC123xYz45"
+      }
     },
     "Telegram": {
-      "Members": 200,
-      "Views": 40
+      "Members": {
+        "packs": [
+          [
+            500,
+            150
+          ],
+          [
+            1000,
+            280
+          ],
+          [
+            2000,
+            560
+          ],
+          [
+            3000,
+            840
+          ],
+          [
+            4000,
+            1120
+          ],
+          [
+            5000,
+            1400
+          ],
+          [
+            10000,
+            2800
+          ],
+          [
+            15000,
+            4200
+          ],
+          [
+            20000,
+            5600
+          ],
+          [
+            25000,
+            7000
+          ],
+          [
+            30000,
+            8400
+          ],
+          [
+            35000,
+            9800
+          ],
+          [
+            40000,
+            11200
+          ],
+          [
+            45000,
+            12600
+          ],
+          [
+            50000,
+            14000
+          ]
+        ],
+        "kind": "Channel or group link",
+        "example": "https://t.me/yourchannel"
+      },
+      "Post Views": {
+        "packs": [
+          [
+            1000,
+            30
+          ],
+          [
+            5000,
+            100
+          ],
+          [
+            10000,
+            150
+          ],
+          [
+            20000,
+            250
+          ],
+          [
+            50000,
+            600
+          ],
+          [
+            100000,
+            900
+          ],
+          [
+            200000,
+            1499
+          ],
+          [
+            500000,
+            2299
+          ],
+          [
+            1000000,
+            2999
+          ]
+        ],
+        "kind": "Post link",
+        "example": "https://t.me/yourchannel/123"
+      }
     },
-    "X": {
-      "Followers": 500,
-      "Likes": 250,
-      "Views": 100
+    "Twitter (X)": {
+      "Followers": {
+        "packs": [
+          [
+            100,
+            80
+          ],
+          [
+            500,
+            400
+          ],
+          [
+            1000,
+            800
+          ],
+          [
+            2000,
+            1600
+          ],
+          [
+            3000,
+            2400
+          ],
+          [
+            4000,
+            3200
+          ],
+          [
+            5000,
+            4000
+          ],
+          [
+            6000,
+            4800
+          ],
+          [
+            7000,
+            5600
+          ],
+          [
+            8000,
+            6400
+          ],
+          [
+            9000,
+            7200
+          ],
+          [
+            10000,
+            8000
+          ]
+        ],
+        "kind": "Profile link",
+        "example": "https://x.com/username"
+      },
+      "Views": {
+        "packs": [
+          [
+            1000,
+            49
+          ],
+          [
+            5000,
+            130
+          ],
+          [
+            10000,
+            200
+          ],
+          [
+            20000,
+            300
+          ],
+          [
+            50000,
+            500
+          ],
+          [
+            100000,
+            900
+          ],
+          [
+            200000,
+            1499
+          ],
+          [
+            500000,
+            2299
+          ],
+          [
+            1000000,
+            2999
+          ]
+        ],
+        "kind": "Post link",
+        "example": "https://x.com/username/status/1234567890"
+      }
     },
     "WhatsApp": {
-      "Channel followers": 400
+      "Channel Followers": {
+        "packs": [
+          [
+            500,
+            150
+          ],
+          [
+            1000,
+            300
+          ],
+          [
+            2000,
+            500
+          ],
+          [
+            3000,
+            750
+          ],
+          [
+            4000,
+            1000
+          ],
+          [
+            5000,
+            1250
+          ],
+          [
+            10000,
+            2500
+          ],
+          [
+            15000,
+            3750
+          ],
+          [
+            20000,
+            5000
+          ],
+          [
+            25000,
+            6250
+          ],
+          [
+            30000,
+            7500
+          ],
+          [
+            35000,
+            8750
+          ],
+          [
+            40000,
+            10000
+          ],
+          [
+            45000,
+            11250
+          ],
+          [
+            50000,
+            12500
+          ]
+        ],
+        "kind": "Channel link",
+        "example": "https://whatsapp.com/channel/AbC123xYz"
+      }
     }
   }
 });

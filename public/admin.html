@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Order admin</title>
+<style>
+:root{--bg:#f4f4f6;--surface:#fff;--ink:#14141a;--muted:#5d5d68;--line:#e1e1e7;--accent:#e8141c;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:max(14px,env(safe-area-inset-top)) 14px 40px}
+.wrap{max-width:720px;margin:0 auto}
+h1{font-size:22px;margin:6px 0 14px}
+input,button{font:inherit}
+input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+button{border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer;background:var(--accent);color:#fff}
+button.alt{background:#fff;color:var(--ink);border:1px solid var(--line)}
+button:disabled{opacity:.5}
+.bar{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-bottom:14px}
+.err{color:#d6203a;min-height:18px;font-size:13px;margin-top:6px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.id{font-weight:700;font-size:17px;letter-spacing:.05em}
+.badge{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:#eee;color:#333}
+.badge.PAID{background:#fde8e9;color:#b30f16}.badge.PROCESSING{background:#fff3cd;color:#7a5b00}.badge.COMPLETED{background:#d9f5e5;color:#126b3c}
+.badge.ISSUE{background:#ffe0b2;color:#8a4b00}.badge.REFUNDED,.badge.FAILED{background:#e5e5ea;color:#555}
+.meta{color:var(--muted);font-size:13px;margin:6px 0}
+.meta a{color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.row button{flex:1 1 90px;padding:9px 8px;font-size:14px}
+.note{margin-top:10px}
+.tl{font-size:12px;color:var(--muted);margin-top:8px}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tabs button{flex:1;background:#fff;color:var(--ink);border:1px solid var(--line)}
+.tabs button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ok{color:#126b3c;min-height:18px;font-size:13px;margin-top:6px}
+.plat{border-left:4px solid var(--accent)}
+.hd{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.hd input{font-weight:700;font-size:16px}
+.sm{padding:7px 10px;font-size:13px;flex:none}
+.danger{background:#fff;color:#d6203a;border:1px solid #f1c3c9}
+.svc{background:#fafafc;border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}
+.lbl{display:block;font-size:12px;color:var(--muted);margin:8px 0 3px}
+.pk{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-top:6px}
+.pk input{padding:8px 10px}
+.pkh{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;font-size:12px;color:var(--muted);margin-top:10px}
+.pkh span:last-child{width:40px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.tools input{width:90px;padding:8px 10px}
+textarea{width:100%;min-height:90px;margin-top:8px;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit}
+.savebar{position:sticky;bottom:0;background:var(--bg);padding:10px 0 max(10px,env(safe-area-inset-bottom));display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:6px}
+.savebar button:first-child{flex:1 1 160px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Orders</h1>
+  <div id="login">
+    <input id="pw" type="password" placeholder="Admin password" autocomplete="current-password">
+    <div class="err" id="lerr" role="alert"></div>
+    <button id="go" type="button">Open</button>
+  </div>
+  <div id="app" hidden>
+    <div class="tabs"><button id="tabO" type="button" class="on">Orders</button><button id="tabR" type="button">Rates &amp; services</button></div>
+    <div id="ordersView">
+    <div class="bar">
+      <input id="q" placeholder="Order ID or phone number" autocomplete="off">
+      <button id="find" type="button">Search</button>
+      <button id="latest" type="button" class="alt">Latest</button>
+    </div>
+    <div class="err" id="aerr" role="alert"></div>
+    <div id="list"></div>
+    </div>
+    <div id="ratesView" hidden>
+      <p class="meta">Yaha se platform, service, pack aur price badal sakte ho. <b>Save</b> dabate hi website par live ho jaata hai (redeploy nahi chahiye).</p>
+      <div class="err" id="rerr" role="alert"></div><div class="ok" id="rok" role="status"></div>
+      <div id="editor"></div>
+      <button id="addPlat" type="button" class="alt" style="width:100%">+ Add platform</button>
+      <div class="savebar"><button id="saveRates" type="button">Save changes</button><button id="resetRates" type="button" class="alt">Reset to rates.js</button></div>
+    </div>
+  </div>
+</div>
+<script>
+var $ = function(id){ return document.getElementById(id); };
+var key = "";
+function el(tag, cls, text){ var e = document.createElement(tag); if(cls) e.className = cls; if(text != null) e.textContent = text; return e; }
+function fmt(t){ return new Date(t).toLocaleString("en-IN", {day:"numeric", month:"short", hour:"numeric", minute:"2-digit"}); }
+function api(body){
+  return fetch("/api/admin", {method:"POST", headers:{"Content-Type":"application/json", "x-admin-key":key}, body:JSON.stringify(body)})
+    .then(function(r){ return r.json().then(function(d){ if(!r.ok) throw new Error(d.error || "Error"); return d; }); });
+}
+function card(o){
+  var c = el("div", "card");
+  var top = el("div", "top"); top.appendChild(el("span", "id", o.id)); var b = el("span", "badge " + o.status, o.status); top.appendChild(b); c.appendChild(top);
+  c.appendChild(el("div", "meta", Number(o.qty).toLocaleString("en-IN") + " " + o.platform + " " + o.service + " · ₹" + o.amount + " · " + fmt(o.createdAt)));
+  var m = el("div", "meta");
+  var wa = el("a", "", "WhatsApp " + o.phone); wa.href = "https://wa.me/91" + o.phone; wa.target = "_blank"; wa.rel = "noopener"; m.appendChild(wa);
+  m.appendChild(document.createTextNode(" · "));
+  if(/^https?:\/\//i.test(o.link)){ var l = el("a", "", "Open link"); l.href = o.link; l.target = "_blank"; l.rel = "noopener"; m.appendChild(l); }
+  c.appendChild(m);
+  var note = el("input", "note"); note.placeholder = "Optional message the customer will see (e.g. Started on your profile)"; c.appendChild(note);
+  var row = el("div", "row");
+  [["PROCESSING","In progress"],["COMPLETED","Completed"],["ISSUE","Issue"],["REFUNDED","Refunded"]].forEach(function(p){
+    var bt = el("button", p[0] === "COMPLETED" ? "" : "alt", p[1]); bt.type = "button";
+    bt.onclick = function(){
+      bt.disabled = true;
+      api({action:"update", id:o.id, status:p[0], note:note.value}).then(function(d){ c.replaceWith(card(d.order)); }).catch(function(e){ $("aerr").textContent = e.message; bt.disabled = false; });
+    };
+    row.appendChild(bt);
+  });
+  c.appendChild(row);
+  var last = (o.timeline || []).slice(-3).map(function(e){ return e.s + (e.n ? " (" + e.n + ")" : "") + " " + fmt(e.t); }).join("  >  ");
+  c.appendChild(el("div", "tl", last));
+  return c;
+}
+function show(list){ var box = $("list"); box.innerHTML = ""; if(!list.length) box.appendChild(el("p", "meta", "No orders found.")); list.forEach(function(o){ box.appendChild(card(o)); }); }
+function run(body){ $("aerr").textContent = ""; api(body).then(function(d){ show(d.orders); }).catch(function(e){ $("aerr").textContent = e.message; }); }
+$("go").onclick = function(){
+  key = $("pw").value; $("lerr").textContent = "";
+  api({action:"recent"}).then(function(d){ sessionStorage.setItem("gd_admin", key); $("login").hidden = true; $("app").hidden = false; show(d.orders); })
+    .catch(function(e){ $("lerr").textContent = e.message; });
+};
+$("pw").addEventListener("keydown", function(e){ if(e.key === "Enter") $("go").click(); });
+$("find").onclick = function(){ run({action:"find", q:$("q").value}); };
+$("q").addEventListener("keydown", function(e){ if(e.key === "Enter") $("find").click(); });
+$("latest").onclick = function(){ run({action:"recent"}); };
+
+/* ---------- tabs ---------- */
+var ratesLoaded = false;
+function tab(which){
+  $("ordersView").hidden = which !== "o"; $("ratesView").hidden = which !== "r";
+  $("tabO").className = which === "o" ? "on" : ""; $("tabR").className = which === "r" ? "on" : "";
+  if(which === "r" && !ratesLoaded) loadRates();
+}
+$("tabO").onclick = function(){ tab("o"); }; $("tabR").onclick = function(){ tab("r"); };
+
+/* ---------- rates & services editor ---------- */
+var model = [];
+function toModel(r){
+  return Object.keys(r).map(function(p){
+    return {name:p, services:Object.keys(r[p]).map(function(s){
+      var o = r[p][s];
+      return {name:s, kind:o.kind || "", example:o.example || "", note:o.note || "", packs:(o.packs || []).map(function(x){ return [String(x[0]), String(x[1])]; })};
+    })};
+  });
+}
+function fromModel(){
+  var r = {};
+  model.forEach(function(p){
+    var pn = p.name.trim(); if(!pn) throw new Error("A platform has no name.");
+    if(r[pn]) throw new Error("Platform \"" + pn + "\" is added twice.");
+    r[pn] = {};
+    p.services.forEach(function(sv){
+      var sn = sv.name.trim(); if(!sn) throw new Error(pn + ": a service has no name.");
+      if(r[pn][sn]) throw new Error(pn + ": service \"" + sn + "\" is added twice.");
+      var packs = sv.packs.filter(function(x){ return String(x[0]).trim() !== "" || String(x[1]).trim() !== ""; }).map(function(x){
+        var q = Number(String(x[0]).replace(/,/g,"")), pr = Number(String(x[1]).replace(/,/g,""));
+        if(!(q > 0) || !(pr > 0)) throw new Error(pn + " > " + sn + ": every pack needs a quantity and a price.");
+        return [q, pr];
+      });
+      if(!packs.length) throw new Error(pn + " > " + sn + " needs at least one pack.");
+      var o = {packs:packs, kind:sv.kind, example:sv.example}; if(sv.note.trim()) o.note = sv.note; r[pn][sn] = o;
+    });
+  });
+  return r;
+}
+function field(label, value, on, ph){
+  var w = document.createElement("div"); w.appendChild(el("label","lbl",label));
+  var i = document.createElement("input"); i.value = value; if(ph) i.placeholder = ph; i.oninput = function(){ on(i.value); }; w.appendChild(i); return w;
+}
+function btn(text, cls, fn){ var b = el("button", cls || "alt", text); b.type = "button"; b.onclick = fn; return b; }
+function move(arr, i, d){ var j = i + d; if(j < 0 || j >= arr.length) return; var t = arr[i]; arr[i] = arr[j]; arr[j] = t; drawEditor(); }
+
+function drawService(p, pi){
+  var box = el("div","svc");
+  return function(sv, si){
+    box = el("div","svc");
+    var hd = el("div","hd");
+    var n = document.createElement("input"); n.value = sv.name; n.placeholder = "Service name (e.g. Followers)"; n.oninput = function(){ sv.name = n.value; }; hd.appendChild(n);
+    hd.appendChild(btn("↑","alt sm",function(){ move(p.services, si, -1); })); hd.appendChild(btn("↓","alt sm",function(){ move(p.services, si, 1); }));
+    hd.appendChild(btn("Delete","danger sm",function(){ if(confirm("Delete service \"" + (sv.name || "") + "\"?")){ p.services.splice(si,1); drawEditor(); } }));
+    box.appendChild(hd);
+    box.appendChild(field("What customer sends (e.g. Profile link)", sv.kind, function(v){ sv.kind = v; }));
+    box.appendChild(field("Example link", sv.example, function(v){ sv.example = v; }, "https://instagram.com/username"));
+    box.appendChild(field("Note shown to customer (optional)", sv.note, function(v){ sv.note = v; }));
+    var h = el("div","pkh"); h.appendChild(el("span","","Quantity")); h.appendChild(el("span","","Price (₹)")); h.appendChild(el("span","","")); box.appendChild(h);
+    sv.packs.forEach(function(pk, k){
+      var row = el("div","pk");
+      var q = document.createElement("input"); q.inputMode = "numeric"; q.value = pk[0]; q.placeholder = "1000"; q.oninput = function(){ pk[0] = q.value; };
+      var pr = document.createElement("input"); pr.inputMode = "decimal"; pr.value = pk[1]; pr.placeholder = "310"; pr.oninput = function(){ pk[1] = pr.value; };
+      row.appendChild(q); row.appendChild(pr); row.appendChild(btn("×","danger sm",function(){ sv.packs.splice(k,1); drawEditor(); }));
+      box.appendChild(row);
+    });
+    var tools = el("div","tools");
+    tools.appendChild(btn("+ Add pack","alt sm",function(){ sv.packs.push(["",""]); drawEditor(); }));
+    var ta = document.createElement("textarea"); ta.placeholder = "Ek line me ek pack: quantity price\n1000 310\n5000 1499"; ta.hidden = true;
+    tools.appendChild(btn("Paste many","alt sm",function(){ ta.hidden = !ta.hidden; }));
+    var pct = document.createElement("input"); pct.inputMode = "decimal"; pct.placeholder = "% e.g. 10"; tools.appendChild(pct);
+    tools.appendChild(btn("Change all prices by %","alt sm",function(){
+      var x = Number(pct.value); if(!isFinite(x) || pct.value.trim() === ""){ return; }
+      sv.packs.forEach(function(pk){ var v = Number(pk[1]); if(v > 0) pk[1] = String(Math.max(1, Math.round(v * (1 + x / 100)))); }); drawEditor();
+    }));
+    box.appendChild(tools);
+    var addMany = btn("Add these packs","sm",function(){
+      ta.value.split(/\n/).forEach(function(line){
+        var m = line.match(/(\d[\d,]*)\D+(\d+(?:\.\d+)?)/); if(!m) return;
+        var q = m[1].replace(/,/g,""), pr = m[2], f = sv.packs.filter(function(pk){ return String(pk[0]) === q; })[0];
+        if(f) f[1] = pr; else sv.packs.push([q, pr]);
+      });
+      sv.packs.sort(function(a,b){ return (Number(a[0]) || 0) - (Number(b[0]) || 0); }); drawEditor();
+    }); addMany.hidden = true;
+    ta.oninput = function(){ addMany.hidden = !ta.value.trim(); };
+    box.appendChild(ta); box.appendChild(addMany);
+    return box;
+  };
+}
+function drawEditor(){
+  var ed = $("editor"); ed.innerHTML = "";
+  model.forEach(function(p, pi){
+    var c = el("div","card plat");
+    var hd = el("div","hd");
+    var n = document.createElement("input"); n.value = p.name; n.placeholder = "Platform name (e.g. Instagram)"; n.oninput = function(){ p.name = n.value; }; hd.appendChild(n);
+    hd.appendChild(btn("↑","alt sm",function(){ move(model, pi, -1); })); hd.appendChild(btn("↓","alt sm",function(){ move(model, pi, 1); }));
+    hd.appendChild(btn("Delete","danger sm",function(){ if(confirm("Delete platform \"" + (p.name || "") + "\" with all its services?")){ model.splice(pi,1); drawEditor(); } }));
+    c.appendChild(hd);
+    var mkSvc = drawService(p, pi);
+    p.services.forEach(function(sv, si){ c.appendChild(mkSvc(sv, si)); });
+    var add = btn("+ Add service to " + (p.name || "this platform"), "alt", function(){ p.services.push({name:"", kind:"Profile link", example:"", note:"", packs:[["",""]]}); drawEditor(); });
+    add.style.marginTop = "10px"; add.style.width = "100%"; c.appendChild(add);
+    ed.appendChild(c);
+  });
+}
+function loadRates(){
+  $("rerr").textContent = ""; $("rok").textContent = "";
+  api({action:"catalog_get"}).then(function(d){ model = toModel(d.rates); ratesLoaded = true; drawEditor();
+    $("rok").textContent = d.custom ? "" : "Abhi rates.js file wale prices chal rahe hain. Save karne ke baad yaha se edit kiye hue prices chalenge."; })
+    .catch(function(e){ $("rerr").textContent = e.message; });
+}
+$("addPlat").onclick = function(){ model.push({name:"", services:[{name:"", kind:"Profile link", example:"", note:"", packs:[["",""]]}]}); drawEditor(); window.scrollTo(0, document.body.scrollHeight); };
+$("saveRates").onclick = function(){
+  $("rerr").textContent = ""; $("rok").textContent = "";
+  var rates; try { rates = fromModel(); } catch(e){ $("rerr").textContent = e.message; window.scrollTo(0,0); return; }
+  var b = $("saveRates"); b.disabled = true;
+  api({action:"catalog_save", rates:rates}).then(function(d){ model = toModel(d.rates); drawEditor(); $("rok").textContent = "Saved. Website par naye rates live hain."; window.scrollTo(0,0); })
+    .catch(function(e){ $("rerr").textContent = e.message; window.scrollTo(0,0); }).then(function(){ b.disabled = false; });
+};
+$("resetRates").onclick = function(){
+  if(!confirm("Saare edits hata kar rates.js file wale prices par wapas jaana hai?")) return;
+  api({action:"catalog_reset"}).then(function(d){ model = toModel(d.rates); drawEditor(); $("rok").textContent = "Reset ho gaya. Ab rates.js wale prices chal rahe hain."; })
+    .catch(function(e){ $("rerr").textContent = e.message; });
+};
+var saved = sessionStorage.getItem("gd_admin"); if(saved){ $("pw").value = saved; $("go").click(); }
+</script>
+</body>
+</html>

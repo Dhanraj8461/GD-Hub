@@ -15,7 +15,12 @@ function headers() {
 async function createOrder(body) {
   const r = await fetch(API + '/orders', { method: 'POST', headers: headers(), body: JSON.stringify(body) });
   const d = await r.json().catch(() => ({}));
-  if (!r.ok) { console.error('Cashfree create order failed', r.status, d); throw new Error('cashfree_create_failed'); }
+  if (!r.ok) {
+    console.error('Cashfree create order failed', r.status, d);
+    const err = new Error('cashfree_create_failed');
+    err.duplicate = r.status === 409 || d.code === 'order_already_exists';
+    throw err;
+  }
   return d;
 }
 
