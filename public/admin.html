@@ -74,6 +74,7 @@ textarea{width:100%;min-height:90px;margin-top:8px;padding:10px;border:1px solid
     <div id="ratesView" hidden>
       <p class="meta">Yaha se platform, service, pack aur price badal sakte ho. <b>Save</b> dabate hi website par live ho jaata hai (redeploy nahi chahiye).</p>
       <div class="err" id="rerr" role="alert"></div><div class="ok" id="rok" role="status"></div>
+      <div class="tools" style="margin:0 0 12px"><button id="checkPanel" type="button" class="alt sm">Check panel connection</button><span class="meta" id="panelMsg"></span></div>
       <div id="editor"></div>
       <button id="addPlat" type="button" class="alt" style="width:100%">+ Add platform</button>
       <div class="savebar"><button id="saveRates" type="button">Save changes</button><button id="resetRates" type="button" class="alt">Reset to rates.js</button></div>
@@ -98,6 +99,8 @@ function card(o){
   m.appendChild(document.createTextNode(" · "));
   if(/^https?:\/\//i.test(o.link)){ var l = el("a", "", "Open link"); l.href = o.link; l.target = "_blank"; l.rel = "noopener"; m.appendChild(l); }
   c.appendChild(m);
+  if(o.panelOrder) c.appendChild(el("div", "meta", "Auto: sent to panel, order #" + o.panelOrder));
+  if(o.panelNote){ var pn = el("div", "meta", "Manual action needed: " + o.panelNote); pn.style.color = "#b30f16"; pn.style.fontWeight = "600"; c.appendChild(pn); }
   var note = el("input", "note"); note.placeholder = "Optional message the customer will see (e.g. Started on your profile)"; c.appendChild(note);
   var row = el("div", "row");
   [["PROCESSING","In progress"],["COMPLETED","Completed"],["ISSUE","Issue"],["REFUNDED","Refunded"]].forEach(function(p){
@@ -140,7 +143,7 @@ function toModel(r){
   return Object.keys(r).map(function(p){
     return {name:p, services:Object.keys(r[p]).map(function(s){
       var o = r[p][s];
-      return {name:s, kind:o.kind || "", example:o.example || "", note:o.note || "", packs:(o.packs || []).map(function(x){ return [String(x[0]), String(x[1])]; })};
+      return {name:s, kind:o.kind || "", example:o.example || "", note:o.note || "", panelId:o.panelId || "", packs:(o.packs || []).map(function(x){ return [String(x[0]), String(x[1])]; })};
     })};
   });
 }
@@ -159,7 +162,7 @@ function fromModel(){
         return [q, pr];
       });
       if(!packs.length) throw new Error(pn + " > " + sn + " needs at least one pack.");
-      var o = {packs:packs, kind:sv.kind, example:sv.example}; if(sv.note.trim()) o.note = sv.note; r[pn][sn] = o;
+      var o = {packs:packs, kind:sv.kind, example:sv.example}; if(sv.note.trim()) o.note = sv.note; if(String(sv.panelId || "").trim()) o.panelId = String(sv.panelId).trim(); r[pn][sn] = o;
     });
   });
   return r;
@@ -183,6 +186,7 @@ function drawService(p, pi){
     box.appendChild(field("What customer sends (e.g. Profile link)", sv.kind, function(v){ sv.kind = v; }));
     box.appendChild(field("Example link", sv.example, function(v){ sv.example = v; }, "https://instagram.com/username"));
     box.appendChild(field("Note shown to customer (optional)", sv.note, function(v){ sv.note = v; }));
+    box.appendChild(field("Panel service ID (auto order, optional)", sv.panelId || "", function(v){ sv.panelId = v; }, "e.g. 1234 (from likeradda.in Services). Empty = you place it by hand"));
     var h = el("div","pkh"); h.appendChild(el("span","","Quantity")); h.appendChild(el("span","","Price (₹)")); h.appendChild(el("span","","")); box.appendChild(h);
     sv.packs.forEach(function(pk, k){
       var row = el("div","pk");
@@ -225,7 +229,7 @@ function drawEditor(){
     c.appendChild(hd);
     var mkSvc = drawService(p, pi);
     p.services.forEach(function(sv, si){ c.appendChild(mkSvc(sv, si)); });
-    var add = btn("+ Add service to " + (p.name || "this platform"), "alt", function(){ p.services.push({name:"", kind:"Profile link", example:"", note:"", packs:[["",""]]}); drawEditor(); });
+    var add = btn("+ Add service to " + (p.name || "this platform"), "alt", function(){ p.services.push({name:"", kind:"Profile link", example:"", note:"", panelId:"", packs:[["",""]]}); drawEditor(); });
     add.style.marginTop = "10px"; add.style.width = "100%"; c.appendChild(add);
     ed.appendChild(c);
   });
@@ -236,7 +240,12 @@ function loadRates(){
     $("rok").textContent = d.custom ? "" : "Abhi rates.js file wale prices chal rahe hain. Save karne ke baad yaha se edit kiye hue prices chalenge."; })
     .catch(function(e){ $("rerr").textContent = e.message; });
 }
-$("addPlat").onclick = function(){ model.push({name:"", services:[{name:"", kind:"Profile link", example:"", note:"", packs:[["",""]]}]}); drawEditor(); window.scrollTo(0, document.body.scrollHeight); };
+$("checkPanel").onclick = function(){
+  $("panelMsg").textContent = "Checking…";
+  api({action:"panel_check"}).then(function(d){ $("panelMsg").style.color = d.ok ? "#126b3c" : "#d6203a"; $("panelMsg").textContent = d.message; })
+    .catch(function(e){ $("panelMsg").style.color = "#d6203a"; $("panelMsg").textContent = e.message; });
+};
+$("addPlat").onclick = function(){ model.push({name:"", services:[{name:"", kind:"Profile link", example:"", note:"", panelId:"", packs:[["",""]]}]}); drawEditor(); window.scrollTo(0, document.body.scrollHeight); };
 $("saveRates").onclick = function(){
   $("rerr").textContent = ""; $("rok").textContent = "";
   var rates; try { rates = fromModel(); } catch(e){ $("rerr").textContent = e.message; window.scrollTo(0,0); return; }

@@ -38,7 +38,8 @@ header{padding:22px 0 8px;display:flex;justify-content:space-between;align-items
 .seg button{font:600 15px "Poppins",sans-serif;background:none;border:0;padding:10px 4px;margin-right:14px;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
 .seg button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--accent)}
 .hero{display:grid;gap:28px;align-items:center;padding:28px 0 30px}
-.hero h1{font-size:clamp(32px,8.6vw,54px);font-weight:600;font-style:italic;line-height:1.08;letter-spacing:-.02em;max-width:15ch}
+.hero h1{font-size:clamp(30px,7.4vw,46px);font-weight:600;line-height:1.14;letter-spacing:-.025em;max-width:16ch}
+.hero h1 .hl{color:var(--accent)}
 .hero .lead{color:var(--muted);margin:14px 0 0;max-width:44ch;font-size:17px}
 .feat{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;max-width:460px}
 .feat>div{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
@@ -134,7 +135,7 @@ button.help{font:inherit;font-size:14px;cursor:pointer;color:var(--ink)}
 .restore input{margin:8px 0}
 .okmsg{color:#126b3c;font-size:13px;min-height:18px;margin-top:6px}
 body{padding-bottom:84px}
-.bnav{--bn:var(--accent);position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:40;width:min(calc(100% - 40px),360px);display:grid;grid-template-columns:repeat(5,1fr);align-items:center;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:0 12px 26px -12px rgba(20,20,26,.35);isolation:isolate}
+.bnav{--bn:var(--accent);position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:60;width:min(calc(100% - 40px),360px);display:grid;grid-template-columns:repeat(5,1fr);align-items:center;background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:999px;padding:4px;box-shadow:0 12px 26px -12px rgba(20,20,26,.35);isolation:isolate}
 .bnav .bpill{position:absolute;left:0;top:0;width:0;height:0;border-radius:999px;background:rgba(232,20,28,.1);box-shadow:inset 0 0 0 1px rgba(232,20,28,.18);opacity:0;z-index:0;pointer-events:none;will-change:transform,width}
 .bnav .bpill.ready{opacity:1;transition:transform .36s cubic-bezier(.3,1.25,.4,1),width .36s cubic-bezier(.3,1.25,.4,1),height .2s ease}
 .bnav>button,.bnav>a{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;padding:5px 0 4px;border:0;background:none;color:var(--muted);font:600 10px/1.25 "Poppins",sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:color .22s ease}
@@ -149,7 +150,8 @@ body{padding-bottom:84px}
 .bnav>button:focus-visible,.bnav>a:focus-visible{outline:2px solid var(--bn);outline-offset:-2px;border-radius:999px}
 @media (prefers-reduced-motion:reduce){.bnav .bpill.ready{transition:none}.bnav>.pop svg{animation:none}}
 .hint{font-size:12.5px;color:var(--muted);margin-top:6px;word-break:break-all}
-.svch{margin:16px 0 6px;font-size:15px;font-weight:600}
+.svch{margin:18px 0 8px;font-size:16px;font-weight:600}
+#vServices .srow{background:var(--surface);padding:13px 14px}
 .srow{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:8px;font:inherit;font-size:14px;color:var(--ink);cursor:pointer}
 .srow small{display:block;color:var(--muted);font-size:12px}
 .srow .srate{flex:none;font-weight:600}
@@ -168,9 +170,9 @@ details{background:var(--surface);border:1px solid var(--line);border-radius:12p
 summary{font-weight:600;cursor:pointer}
 details p{margin:8px 0 0;color:var(--muted);font-size:15px}
 footer{margin:40px 0 28px;color:var(--muted);font-size:13px}
-.sheet-bg{position:fixed;inset:0;background:rgba(20,20,26,.5);display:none;align-items:flex-end;justify-content:center;z-index:50}
+.sheet-bg{position:fixed;inset:0;background:rgba(20,20,26,.5);display:none;align-items:flex-end;justify-content:center;z-index:50;box-sizing:border-box;padding:12px 0 calc(76px + env(safe-area-inset-bottom,0px))}
 .sheet-bg.open{display:flex}
-.sheet{background:var(--surface);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));max-height:92%;overflow:auto}
+.sheet{background:var(--surface);width:calc(100% - 24px);max-width:520px;border-radius:20px;padding:20px 18px;max-height:100%;overflow:auto;box-shadow:0 10px 40px -12px rgba(20,20,26,.45)}
 .sheet h3{font-size:22px}
 .sum{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;font-size:15px}
 .sum b{font-weight:600}
@@ -185,6 +187,27 @@ a.btn{display:block;text-align:center;text-decoration:none}
 .qrbox img{max-width:100%;height:auto;display:block}
 .linkbtn{background:none;border:0;color:var(--muted);font:500 14px "Poppins",sans-serif;margin-top:10px;cursor:pointer;width:100%;padding:8px}
 .paytitle{margin:4px 0 0;font-size:16px}
+.res{text-align:center}
+.resIcon{width:64px;height:64px;border-radius:50%;margin:6px auto 12px;display:grid;place-items:center}
+.resIcon.ok{background:#e3f6ea;color:#126b3c}.resIcon.bad{background:#fde8e9;color:#b30f16}.resIcon.wait{background:#eef0f5;color:var(--muted)}
+.resIcon svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.resIcon.wait svg{animation:rspin 1s linear infinite}
+@keyframes rspin{to{transform:rotate(360deg)}}
+.resTitle{font:600 21px "Poppins",sans-serif;margin:0}
+.resSub{color:var(--muted);font-size:14.5px;margin:6px 0 14px}
+.resCard{text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:2px 14px;margin:0 0 10px}
+.rrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;font-size:14.5px}
+.rrow+.rrow{border-top:1px solid var(--line)}
+.rrow>span{color:var(--muted);flex:none}.rrow>b{font-weight:600;text-align:right}
+.rid{display:flex;align-items:center;gap:8px;color:var(--ink)}.rid b{font-weight:600;letter-spacing:.05em}
+.bacts{display:flex;gap:4px;align-items:center;flex:none}
+.bx{background:none;border:0;font-size:22px;line-height:1;color:var(--muted);cursor:pointer;padding:0 6px}
+.scard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+.shead{display:flex;align-items:center;gap:12px}
+.scard .pi{width:42px;height:42px;box-shadow:none;background:var(--bg)}.scard .pi svg{width:24px;height:24px}
+.shead b{display:block;font-weight:600}.shead span{display:block;color:var(--muted);font-size:14px}
+.scard .btn{margin-top:14px}
+
 </style>
 </head>
 <body>
@@ -195,11 +218,11 @@ a.btn{display:block;text-align:center;text-decoration:none}
   </header>
 
   <main id="vOrder">
-  <div class="banner" id="banner" hidden><span id="bText"></span><button class="bbtn" id="bView" type="button">View</button></div>
+  <div class="banner" id="banner" hidden><span id="bText"></span><span class="bacts"><button class="bbtn" id="bView" type="button">View</button><button class="bx" id="bClose" type="button" aria-label="Dismiss">×</button></span></div>
   <section class="hero">
     <div>
-      <h1>Fast, simple growth for your social media.</h1>
-      <p class="lead">Pick a package, pay by UPI, and your order starts within minutes. We never ask for your password.</p>
+      <h1>Grow your social media <span class="hl">in minutes.</span></h1>
+      <p class="lead">Choose a package, pay by UPI, and your order starts right away. No login and no password needed.</p>
       <div class="feat">
         <div class="wide"><i><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 2h6"/></svg></i><span><b>10–15 min delivery only</b><small>Your order starts right after payment</small></span></div>
         <div><i><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></i><span><b>Fast service</b><small>Quick start, every order</small></span></div>
@@ -245,6 +268,27 @@ a.btn{display:block;text-align:center;text-decoration:none}
 
   <footer><button class="linkbtn" id="footTrack" type="button" style="width:auto;padding:0 0 10px;text-align:left">Track your order</button><br>© <span id="yr"></span> <span id="brandFoot">GrowwithDhanraj</span>. Not affiliated with Instagram, Facebook, YouTube, Telegram, X or WhatsApp.</footer>
   </main>
+  <main id="vServices" hidden>
+    <h2 class="ptitle">Services and prices</h2>
+    <p class="psub">Tap a service to see its packages and order it.</p>
+    <div id="svcList"></div>
+  </main>
+  <main id="vSupport" hidden>
+    <h2 class="ptitle">Support</h2>
+    <p class="psub">Need help with an order? Message us on WhatsApp and send your Order ID. We reply as soon as we can.</p>
+    <div class="scard">
+      <div class="shead"><span id="supIc1"></span><div><b>WhatsApp support</b><span id="supNum"></span></div></div>
+      <a class="btn" id="supWa" href="#" target="_blank" rel="noopener">Chat on WhatsApp</a>
+    </div>
+    <div class="scard">
+      <div class="shead"><span id="supIc2"></span><div><b>WhatsApp Channel</b><span>Follow our channel for updates.</span></div></div>
+      <a class="btn alt" id="supCh" href="#" target="_blank" rel="noopener">Join our channel</a>
+    </div>
+    <div class="scard">
+      <div class="shead"><div><b>Have an Order ID?</b><span>Check the live status of your order.</span></div></div>
+      <button class="btn alt" id="supTrack" type="button">Track my order</button>
+    </div>
+  </main>
   <main id="vOrders" hidden>
     <h2 class="ptitle">My orders</h2>
     <p class="psub">Orders you place on this phone or computer are saved here automatically, with live status.</p>
@@ -259,7 +303,7 @@ a.btn{display:block;text-align:center;text-decoration:none}
       <button class="btn" id="rGo" type="button">Restore my orders</button>
       <div class="err" id="rErr" role="alert"></div>
     </details>
-    <p class="small">Lost every Order ID? Tap Help below and message us with your number. We will find your orders.</p>
+    <p class="small">Lost every Order ID? Open Support below and message us with your number. We will find your orders.</p>
   </main>
 </div>
 
@@ -267,20 +311,11 @@ a.btn{display:block;text-align:center;text-decoration:none}
 <nav class="bnav" aria-label="Main">
   <span class="bpill" aria-hidden="true"></span>
   <button type="button" data-v="order" class="on"><svg viewBox="0 0 24 24"><path class="f" d="M4 10.5L12 4l8 6.5V19a1 1 0 01-1 1h-4v-5h-6v5H5a1 1 0 01-1-1z"/></svg>Home</button>
-  <button type="button" id="navSvc"><svg viewBox="0 0 24 24"><rect class="f" x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect class="f" x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect class="f" x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect class="f" x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></svg>Services</button>
+  <button type="button" id="navSvc" data-v="services"><svg viewBox="0 0 24 24"><rect class="f" x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect class="f" x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect class="f" x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect class="f" x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></svg>Services</button>
   <button type="button" id="navNew"><svg viewBox="0 0 24 24"><circle class="f" cx="12" cy="12" r="8.5"/><path class="in" d="M12 8v8M8 12h8"/></svg>New</button>
   <button type="button" data-v="orders"><svg viewBox="0 0 24 24"><path class="f" d="M12 3l8 4.2v9.6L12 21l-8-4.2V7.2z"/><path class="in" d="M4 7.2l8 4.2 8-4.2M12 11.4V21"/></svg>Orders<i id="bBadge" hidden>0</i></button>
-  <a id="navHelp" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M5 14v-2a7 7 0 0114 0v2"/><rect class="f" x="3.5" y="13.5" width="4" height="6" rx="1.6"/><rect class="f" x="16.5" y="13.5" width="4" height="6" rx="1.6"/><path d="M19 19.5c0 1.4-1.8 2-4.5 2"/></svg>Support</a>
+  <button type="button" id="navHelp" data-v="support"><svg viewBox="0 0 24 24"><path d="M5 14v-2a7 7 0 0114 0v2"/><rect class="f" x="3.5" y="13.5" width="4" height="6" rx="1.6"/><rect class="f" x="16.5" y="13.5" width="4" height="6" rx="1.6"/><path d="M19 19.5c0 1.4-1.8 2-4.5 2"/></svg>Support</button>
 </nav>
-
-<div class="sheet-bg" id="svcBg">
-  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="svcTitle">
-    <button class="close" id="svcClose" aria-label="Close">×</button>
-    <h3 id="svcTitle">Services and prices</h3>
-    <p class="small">Tap a service to order it.</p>
-    <div id="svcList"></div>
-  </div>
-</div>
 
 <div class="sheet-bg" id="bg">
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
@@ -297,10 +332,16 @@ a.btn{display:block;text-align:center;text-decoration:none}
     <button class="btn" id="next">Place your order</button>
     <p class="small">We never ask for your password. Keep your account public until delivery is complete. After payment you get an Order ID, saved in My orders.</p>
     </div>
-    <div id="resultStep" hidden>
-      <p class="paytitle"><b id="resTitle"></b></p>
-      <div class="oidrow" id="resIdRow" hidden><span class="oid" id="resId"></span><button class="mini" id="resCopy" type="button">Copy</button></div>
-      <p class="small" id="resText"></p>
+    <div id="resultStep" class="res" hidden>
+      <div class="resIcon" id="resIcon" aria-hidden="true"></div>
+      <h4 class="resTitle" id="resTitle"></h4>
+      <p class="resSub" id="resText"></p>
+      <div class="resCard" id="resCard" hidden>
+        <div class="rrow" id="resSvcRow" hidden><span>Order</span><b id="resSvc"></b></div>
+        <div class="rrow" id="resAmtRow" hidden><span>Amount paid</span><b id="resAmt"></b></div>
+        <div class="rrow" id="resIdRow" hidden><span>Order ID</span><span class="rid"><b id="resId"></b><button class="mini" id="resCopy" type="button">Copy</button></span></div>
+      </div>
+      <p class="small" id="resNote" hidden></p>
       <button class="btn" id="resTrack" type="button" hidden>Track this order</button>
       <button class="btn alt" id="resAll" type="button" hidden>See all my orders</button>
       <a class="btn alt" id="resWa" href="#" target="_blank" rel="noopener" hidden>Message us on WhatsApp</a>
@@ -345,6 +386,7 @@ window.SITE_RATES = window.SITE_RATES || {"rates":{"Instagram":{"Indian Follower
 var CONFIG = {
   brand: "GrowwithDhanraj",
   whatsapp: "917617238330",      // your number with country code, no + or spaces (support link)
+  channel: "https://whatsapp.com/channel/0029Vb8fGdn9cDDYXbyY6t3h",   // your WhatsApp Channel link
 };
 /* Prices live in rates.js (fixed packs: [quantity, price in ₹]). */
 var RATES = {};
@@ -362,7 +404,6 @@ function fq(n){ if(n >= 1000000) return (n / 1000000) + "M"; if(n >= 1000) retur
 $("brandFoot").textContent = CONFIG.brand;
 document.title = CONFIG.brand + " – Followers, Likes & Views";
 $("yr").textContent = new Date().getFullYear();
-$("navHelp").href = "https://wa.me/" + CONFIG.whatsapp;
 $("navHelp").addEventListener("click", function(){ bMove($("navHelp")); setTimeout(function(){ bMove(bCur); }, 900); });
 
 function mk(tag, cls, text){var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e}
@@ -425,7 +466,7 @@ function openSheet(q, p){
   $("sum").querySelector("b").textContent = fq(q) + " " + state.platform + " " + svcLabel(state.service).toLowerCase();
   $("sum").querySelector("span").textContent = "Total: " + inr(p);
   $("err").textContent = "";
-  $("formStep").hidden = false; $("resultStep").hidden = true; $("sum").hidden = false; $("sheetTitle").textContent = "Complete your order";
+  $("formStep").hidden = false; $("resultStep").hidden = true; $("sum").hidden = false; $("sheetTitle").hidden = false; $("sheetTitle").textContent = "Complete your order";
   $("next").disabled = false; $("next").textContent = "Place your order";
   var info = svcInfo(state.platform, state.service);
   $("linkLbl").textContent = info.kind || "Profile or post link";
@@ -466,11 +507,22 @@ function copyText(text, btn){
 }
 function waLink(id){ return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent("Hi, I need help with my order ID " + id); }
 
+var RES_ICON = {
+  ok:'<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  bad:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  wait:'<svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 109 9"/></svg>'
+};
 function showResult(title, text, id, mode){
   $("formStep").hidden = true; $("sum").hidden = true; $("resultStep").hidden = false;
-  $("sheetTitle").textContent = "Payment status";
+  $("sheetTitle").hidden = true;
+  var ic = $("resIcon"); ic.className = "resIcon " + (mode === "ok" ? "ok" : mode === "wait" ? "wait" : "bad"); ic.innerHTML = RES_ICON[mode === "ok" ? "ok" : mode === "wait" ? "wait" : "bad"];
   $("resTitle").textContent = title; $("resText").textContent = text;
+  var h = loadHist().filter(function(x){ return x.id === id; })[0];
+  $("resCard").hidden = !id || mode === "wait";
   $("resIdRow").hidden = !id; $("resId").textContent = id || "";
+  $("resSvcRow").hidden = !(mode === "ok" && h && h.label); $("resSvc").textContent = h && h.label ? h.label : "";
+  $("resAmtRow").hidden = !(mode === "ok" && h && h.amount); $("resAmt").textContent = h && h.amount ? inr(h.amount) : "";
+  var nt = $("resNote"); nt.hidden = mode !== "ok"; nt.textContent = "Keep your Order ID safe. You can also follow this order anytime in My orders.";
   $("resCopy").onclick = function(){ copyText(id, $("resCopy")); };
   $("resTrack").hidden = mode !== "ok"; $("resTrack").onclick = function(){ closeSheet(); openTrack(id); };
   $("resAll").hidden = mode !== "ok"; $("resAll").onclick = function(){ closeSheet(); setView("orders"); };
@@ -489,7 +541,7 @@ function checkReturn(){
       var d = x.d, st = d.status;
       if(x.ok && st && st !== "AWAITING_PAYMENT" && st !== "FAILED"){
         saveHist({id:id, label:fq(Number(d.qty)) + " " + d.platform + " " + svcLabel(d.service).toLowerCase(), amount:d.amount, at:Date.now(), status:d.status});
-        showResult("Payment received", "Thank you! Your order starts within minutes and finishes in about 10–15 minutes. Save your Order ID below. It is also saved in My orders, where you can follow the status.", id, "ok");
+        showResult("Payment successful", "Your order has been placed. It usually starts within a few minutes and finishes in about 10–15 minutes.", id, "ok");
       } else if(x.ok && st === "AWAITING_PAYMENT" && tries++ < 5){ setTimeout(poll, 2500); }
       else { showResult("Payment not confirmed", "If money was deducted, message us with your Order ID and we will check it right away.", id, "bad"); }
     }).catch(function(){ showResult("Could not check the payment", "Message us with your Order ID and we will confirm it.", id, "bad"); });
@@ -595,13 +647,23 @@ window.addEventListener("resize", function(){ bPlace(bShown || bCur); });
 window.addEventListener("load", function(){ bPlace(bShown || bCur); });
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ bPlace(bShown || bCur); });
 function setView(v, keep){
-  var o = v === "orders";
-  $("vOrder").hidden = o; $("vOrders").hidden = !o;
+  $("vOrder").hidden = v !== "order"; $("vOrders").hidden = v !== "orders"; $("vSupport").hidden = v !== "support"; $("vServices").hidden = v !== "services";
   if(!keep) bActivate(document.querySelector('.bnav [data-v="' + v + '"]'));
-  try { history.replaceState(null, "", o ? "#orders" : location.pathname + location.search); } catch(e) {}
+  try { history.replaceState(null, "", v === "orders" ? "#orders" : v === "support" ? "#support" : v === "services" ? "#services" : location.pathname + location.search); } catch(e) {}
   window.scrollTo(0, 0);
-  if(o){ renderOrders(); refreshOrders(); }
+  if(v === "orders"){ renderOrders(); refreshOrders(); }
+  if(v === "services") renderServicesPage();
 }
+(function(){
+  var n = "+" + CONFIG.whatsapp.replace(/^(\d{2})(\d{5})(\d+)$/, "$1 $2 $3");
+  $("supNum").textContent = n;
+  $("supWa").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent("Hi, I need help.");
+  $("supCh").href = CONFIG.channel;
+  $("supIc1").appendChild(platIcon("WhatsApp")); $("supIc2").appendChild(platIcon("WhatsApp"));
+  $("supTrack").onclick = function(){ openTrack(""); };
+  /* tapping the bottom bar always closes any open popup first, so the page underneath is reachable */
+  bnav.addEventListener("click", function(){ closeSheet(); closeTrack(); }, true);
+})();
 function orderCard(o){
   var c = mk("div", "ocard");
   var top = mk("div", "otop"); top.appendChild(mk("b", "", o.label)); top.appendChild(mk("span", "sb " + (o.status || ""), o.status ? (LABEL[o.status] || o.status) : "Tap to check")); c.appendChild(top);
@@ -630,10 +692,16 @@ function updateBadge(h){
   var act = h.filter(function(o){ return isActive(o.status); });
   $("bBadge").hidden = !act.length; $("bBadge").textContent = act.length;
   var bn = $("banner");
-  if(!act.length){ bn.hidden = true; return; }
+  var fresh = act.filter(function(o){ return !o.at || Date.now() - o.at < 864e5; });
+  var key = fresh.map(function(o){ return o.id + ":" + o.status; }).join(",");
+  var off = ""; try { off = localStorage.getItem("gd_banner_off") || ""; } catch(e) {}
+  if(!fresh.length || key === off){ bn.hidden = true; return; }
   bn.hidden = false;
-  if(act.length === 1){ $("bText").textContent = "Your order " + act[0].id + " is " + (LABEL[act[0].status] || "").toLowerCase() + "."; $("bView").onclick = function(){ openTrack(act[0].id); }; }
-  else { $("bText").textContent = "You have " + act.length + " orders in progress."; $("bView").onclick = function(){ setView("orders"); }; }
+  $("bClose").onclick = function(){ try { localStorage.setItem("gd_banner_off", key); } catch(e) {} bn.hidden = true; };
+  if(fresh.length === 1){
+    var o = fresh[0], m = {AWAITING_PAYMENT:"Payment for order " + o.id + " is pending.", PAID:"Order " + o.id + " is confirmed. Payment received.", PROCESSING:"Order " + o.id + " is in progress."};
+    $("bText").textContent = m[o.status] || ("Order " + o.id); $("bView").onclick = function(){ openTrack(o.id); };
+  } else { $("bText").textContent = "You have " + fresh.length + " orders in progress."; $("bView").onclick = function(){ setView("orders"); }; }
 }
 var rBusy = false;
 function refreshOrders(){
@@ -649,7 +717,7 @@ function refreshOrders(){
 document.querySelectorAll(".bnav [data-v]").forEach(function(b){ b.onclick = function(){ setView(b.getAttribute("data-v")); }; });
 function goPackages(){ setView("order", true); bActivate($("navNew")); var t = $("packages"); if(t && t.scrollIntoView) t.scrollIntoView({behavior:"smooth"}); }
 $("navNew").onclick = goPackages;
-function openServices(){
+function renderServicesPage(){
   var box = $("svcList"); box.innerHTML = "";
   Object.keys(RATES).forEach(function(pl){
     var hh = mk("h4", "svch"); hh.appendChild(platIcon(pl)); hh.appendChild(mk("span","",pl)); box.appendChild(hh);
@@ -658,17 +726,11 @@ function openServices(){
       var pk = svcInfo(pl, sv).packs, row = mk("button", "srow"); row.type = "button";
       var l = mk("span"); l.appendChild(mk("b", "", svcLabel(sv))); l.appendChild(mk("small", "", fq(pk[0][0]) + " to " + fq(pk[pk.length - 1][0]) + " · " + pk.length + " packs"));
       row.appendChild(l); row.appendChild(mk("span", "srate", "From " + inr(pk[0][1])));
-      row.onclick = function(){ closeServices(); state.platform = pl; state.service = sv; render(); goPackages(); };
+      row.onclick = function(){ state.platform = pl; state.service = sv; render(); goPackages(); };
       box.appendChild(row);
     });
   });
-  $("svcBg").classList.add("open");
 }
-function closeServices(){ $("svcBg").classList.remove("open"); bMove(bCur); if(document.activeElement && document.activeElement.blur) document.activeElement.blur(); }
-$("navSvc").onclick = function(){ bMove($("navSvc")); openServices(); };
-$("svcClose").onclick = closeServices;
-$("svcBg").onclick = function(e){ if(e.target === $("svcBg")) closeServices(); };
-document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeServices(); });
 $("footTrack").onclick = function(){ setView("orders"); };
 $("oGo").onclick = function(){ var id = $("oId").value.trim().toUpperCase(); if(!id){ $("oErr").textContent = "Enter your Order ID."; return; } $("oErr").textContent = ""; openTrack(id); };
 $("oId").addEventListener("keydown", function(e){ if(e.key === "Enter") $("oGo").click(); });
@@ -684,7 +746,8 @@ $("rGo").onclick = function(){
     }).catch(function(){ msg.textContent = "Could not restore right now. Please try again."; });
 };
 setInterval(function(){ if(!document.hidden) refreshOrders(); }, 30000);
-window.addEventListener("hashchange", function(){ setView(location.hash === "#orders" ? "orders" : "order"); });
+function viewFromHash(){ return location.hash === "#orders" ? "orders" : location.hash === "#support" ? "support" : location.hash === "#services" ? "services" : "order"; }
+window.addEventListener("hashchange", function(){ setView(viewFromHash()); });
 
 function start(){
   var d = window.SITE_RATES;
@@ -695,7 +758,7 @@ function start(){
     render();
   }
   checkReturn();
-  if(location.hash === "#orders") setView("orders"); else refreshOrders();
+  if(viewFromHash() !== "order") setView(viewFromHash()); else refreshOrders();
 }
 /* Prices/services come from /api/catalog (edited in the admin page). If that is not reachable, rates.js is used. */
 function loadCatalog(cb){

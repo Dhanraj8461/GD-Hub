@@ -90,3 +90,14 @@ Cashfree → Developers → Webhooks → Add Webhook:
 - **Save changes** दबाते ही वेबसाइट पर लाइव (redeploy नहीं चाहिए)। सर्वर भी यही रेट जाँचता है।
 - "Reset to rates.js" से सारे edits हटकर `rates.js` वाले रेट वापस आ जाते हैं।
 - नए platform का असली logo नहीं आता, सिर्फ़ उसका पहला अक्षर दिखता है (logo के लिए कोड में जोड़ना पड़ेगा)।
+
+## ऑटो ऑर्डर (SMM पैनल से) (नया)
+पेमेंट कन्फ़र्म होते ही ऑर्डर अपने आप likeradda.in पैनल पर लग जाता है।
+1. likeradda.in → Settings → API key **Regenerate** कर के कॉपी कर।
+2. Vercel → Environment Variables में `PANEL_KEY` = वो key डाल (URL अपने आप `https://www.likeradda.in/api/v2` रहता है)। Redeploy कर।
+3. `/admin.html` → **Rates & services** → हर service में **Panel service ID** भर (पैनल के Services पेज से ID)। खाली छोड़ी तो वो service पहले की तरह हाथ से लगानी होगी। **Save changes** दबा।
+4. **Check panel connection** दबाकर देख ले कि balance दिख रहा है।
+- ऑर्डर फेल हो या पैनल जवाब न दे तो Telegram पर **MANUAL ACTION NEEDED** आता है। एक ही ऑर्डर दो बार नहीं लगता।
+- ऑर्डर का status (In progress/Completed/Issue) पैनल से अपने आप अपडेट होता है जब कस्टमर Track page खोले या तू admin खोले।
+- पैनल में balance रखना ज़रूरी है।
+- **सुरक्षा:** Cashfree टेस्ट मोड (`CF_ENV` ≠ `PROD`) में ऑटो ऑर्डर **नहीं** लगता, ताकि नकली पेमेंट पर पैनल का असली balance खर्च न हो। लाइव होने पर `CF_ENV=PROD` कर दे।

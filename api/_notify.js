@@ -33,8 +33,12 @@ async function notifyPaid(rec) {
   const site = (process.env.SITE_URL || '').replace(/\/$/, '');
   const text = 'New PAID order ' + rec.id + '\nService: ' + rec.platform + ' ' + rec.service +
     '\nQuantity: ' + Number(rec.qty).toLocaleString('en-IN') + '\nPaid: Rs ' + rec.amount +
-    '\nLink: ' + rec.link + '\nCustomer: ' + rec.phone + (site ? '\nUpdate status: ' + site + '/admin.html' : '');
+    '\nLink: ' + rec.link + '\nCustomer: ' + rec.phone + (rec.panelOrder ? '\nAUTO: sent to panel, panel order #' + rec.panelOrder : '') +
+    (rec.panelNote ? '\nMANUAL ACTION NEEDED: ' + rec.panelNote : '') +
+    (site ? '\nUpdate status: ' + site + '/admin.html' : '');
   const res = await Promise.allSettled([sendWhatsApp(rec), sendTelegram(text)]);
   return res.some((r) => r.status === 'fulfilled' && r.value === true);
 }
-module.exports = { notifyPaid };
+// Plain text alert for the owner (Telegram only)
+const notifyOwner = (text) => sendTelegram(text).catch(() => false);
+module.exports = { notifyPaid, notifyOwner };

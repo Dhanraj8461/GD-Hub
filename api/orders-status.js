@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     const recs = await db.many(ids);
     let checked = 0;
     for (let i = 0; i < recs.length; i++) {
-      if (recs[i].status === 'AWAITING_PAYMENT' && checked++ < 5) { try { recs[i] = await reconcile(recs[i]); } catch (e) { console.error(e.message); } }
+      if ((recs[i].status === 'AWAITING_PAYMENT' || recs[i].panelOrder) && checked++ < 5) { try { recs[i] = await reconcile(recs[i]); } catch (e) { console.error(e.message); } }
     }
     return res.status(200).json({ orders: recs.map(publicView) });
   } catch (e) { console.error(e.message); return res.status(200).json({ orders: [] }); }

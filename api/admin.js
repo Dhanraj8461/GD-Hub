@@ -3,6 +3,9 @@ const crypto = require('crypto');
 const db = require('./_db');
 const { addEvent, LABELS } = require('./_orders');
 const { validate, defaults } = require('./_rates');
+const panel = require('./_panel');
+const { syncPanel } = require('./_orders');
+const withSync = async (list) => { await Promise.all(list.slice(0, 10).map((o) => syncPanel(o).catch(() => o))); return list; };
 
 const sha = (s) => crypto.createHash('sha256').update(String(s)).digest();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -16,12 +19,12 @@ module.exports = async (req, res) => {
   if (!db.enabled()) return res.status(503).json({ error: 'Database is not connected yet (see README).' });
   try {
     const b = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    if (b.action === 'recent') return res.status(200).json({ orders: await db.recent(40) });
+    if (b.action === 'recent') return res.status(200).json({ orders: await withSync(await db.recent(40)) });
     if (b.action === 'find') {
       const q = String(b.q || '').trim();
-      if (/^gd/i.test(q)) { const r = await db.getOrder(q.toUpperCase()); return res.status(200).json({ orders: r ? [r] : [] }); }
+      if (/^gd/i.test(q)) { const r = await db.getOrder(q.toUpperCase()); return res.status(200).json({ orders: r ? await withSync([r]) : [] }); }
       const phone = q.replace(/\D/g, '').slice(-10);
-      return res.status(200).json({ orders: phone.length === 10 ? await db.byPhone(phone) : [] });
+      return res.status(200).json({ orders: phone.length === 10 ? await withSync(await db.byPhone(phone)) : [] });
     }
     if (b.action === 'update') {
       if (!EDITABLE.includes(b.status)) return res.status(400).json({ error: 'Bad status' });
@@ -30,6 +33,11 @@ module.exports = async (req, res) => {
       addEvent(rec, b.status, String(b.note || '').slice(0, 140));
       await db.saveOrder(rec);
       return res.status(200).json({ order: rec, label: LABELS[rec.status] });
+    }
+    if (b.action === 'panel_check') {
+      if (!panel.enabled()) return res.status(200).json({ ok: false, message: 'PANEL_KEY is not set in Vercel yet.' });
+      try { const d = await panel.balance(); return res.status(200).json(d && d.balance != null ? { ok: true, message: 'Panel connected. Balance: ' + d.balance + ' ' + (d.currency || '') } : { ok: false, message: 'Panel said: ' + String((d && d.error) || 'unknown reply').slice(0, 120) }); }
+      catch (e) { return res.status(200).json({ ok: false, message: 'Could not reach the panel: ' + e.message }); }
     }
     if (b.action === 'catalog_get') {
       const c = await db.getCatalog();

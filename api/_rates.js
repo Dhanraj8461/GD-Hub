@@ -67,6 +67,8 @@ function validate(input) {
       packs.sort((a, b) => a[0] - b[0]);
       const svc = { packs, kind: clip(o.kind, 40) || 'Link', example: clip(o.example, 150) };
       const note = clip(o.note, 200); if (note) svc.note = note;
+      const pid = clip(o.panelId, 20);
+      if (pid) { if (!/^\d+$/.test(pid)) return { error: p + ' > ' + s + ': Panel service ID must be a number.' }; svc.panelId = pid; }
       out[p][s] = svc;
     }
   }
