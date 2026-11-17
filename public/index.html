@@ -9,6 +9,14 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1133690196075007');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1133690196075007&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,600&display=swap">
@@ -491,6 +499,7 @@ $("next").onclick = function(){
   if(!/^https?:\/\/\S+\.\S+/i.test(link)){ $("err").textContent = "Enter a valid link that starts with https://"; return }
   if(phone.replace(/\D/g,"").length < 10){ $("err").textContent = "Enter a valid WhatsApp number."; return }
   $("err").textContent = "";
+  pxTrack("InitiateCheckout", {value:state.pick.p, currency:"INR", content_name:state.platform + " " + svcLabel(state.service), num_items:1});
   var btn = $("next"), label = "Place your order";
   btn.disabled = true; btn.textContent = "Placing your order…";
   fetch("/api/create-order", {method:"POST", headers:{"Content-Type":"application/json"},
@@ -534,6 +543,14 @@ function showResult(title, text, id, mode){
   var wa = $("resWa"); wa.hidden = (mode === "ok" || mode === "wait"); if(!wa.hidden) wa.href = waLink(id);
   $("bg").classList.add("open");
 }
+/* Meta Pixel events. Only the amount and the service name are sent. Never the phone number, link or order ID (the order ID is only used so Meta can skip duplicates). */
+function pxTrack(name, data, onceKey, eventId){
+  try {
+    if(!window.fbq) return;
+    if(onceKey){ var k = "gd_px_" + name + "_" + onceKey; if(localStorage.getItem(k)) return; localStorage.setItem(k, "1"); }
+    if(eventId) fbq("track", name, data || {}, {eventID: eventId}); else fbq("track", name, data || {});
+  } catch(e) {}
+}
 function checkReturn(){
   var q = new URLSearchParams(location.search), id = q.get("order_id"), tr = q.get("track");
   if(tr){ history.replaceState(null, "", location.pathname); openTrack(tr); return; }
@@ -546,6 +563,7 @@ function checkReturn(){
       var d = x.d, st = d.status;
       if(x.ok && st && st !== "AWAITING_PAYMENT" && st !== "FAILED"){
         saveHist({id:id, label:fq(Number(d.qty)) + " " + d.platform + " " + svcLabel(d.service).toLowerCase(), amount:d.amount, at:Date.now(), status:d.status});
+        pxTrack("Purchase", {value:Number(d.amount) || 0, currency:"INR", content_name:d.platform + " " + svcLabel(d.service), num_items:1}, id, id);
         showResult("Payment successful", "Your order has been placed. It usually starts within a few minutes and finishes in about 10–15 minutes.", id, "ok");
       } else if(x.ok && st === "AWAITING_PAYMENT" && tries++ < 5){ setTimeout(poll, 2500); }
       else { showResult("Payment not confirmed", "If money was deducted, message us with your Order ID and we will check it right away.", id, "bad"); }
